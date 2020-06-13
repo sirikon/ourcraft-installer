@@ -21,9 +21,8 @@ function download-latest-deb {
 }
 
 function install-deb {
-	printf "Installing downloaded deb..."
-	run-silent apt-get install -y "${DEB_FILE_PATH}"
-	printf " OK\n"
+	printf "Installing downloaded deb using APT\n"
+	apt-get install -y "${DEB_FILE_PATH}"
 }
 
 function display-final-message {
@@ -31,15 +30,6 @@ function display-final-message {
 	printf "Ourcraft installation done!\n"
 	printf "Run 'apt-get remove ourcraft' to uninstall\n"
 	printf "\n"
-}
-
-function create-temp-folder {
-	destroy-temp-folder
-	mkdir -p "$TEMP_FOLDER"
-}
-
-function destroy-temp-folder {
-	rm -rf "$TEMP_FOLDER"
 }
 
 function get-latest-release-deb {
@@ -57,17 +47,13 @@ function get-latest-release {
 	curl -s https://api.github.com/repos/sirikon/ourcraft/releases/latest
 }
 
-function run-silent {
-	set +e
-	output=$("$@" 2>&1)
-	result=$?
-	set -e
-	if [ "$result" -gt "0" ]; then
-		echo "Error while running command:"
-		echo "$*"
-		printf "%s\n" "$output"
-		exit "$result"
-	fi
+function create-temp-folder {
+	destroy-temp-folder
+	mkdir -p "$TEMP_FOLDER"
+}
+
+function destroy-temp-folder {
+	rm -rf "$TEMP_FOLDER"
 }
 
 main
